@@ -15,9 +15,9 @@ if (NOT LIBS_INSTALL_DIR)
 	MESSAGE(FATAL_ERROR "LIBS_INSTALL_DIR for ortools not defined")
 endif()
 
-#if (NOT SIRIUSDIR)
-#	MESSAGE(FATAL_ERROR "SIRIUSDIR not defined")
-#endif()
+if (NOT SIRIUSDIR)
+	MESSAGE(FATAL_ERROR "SIRIUSDIR not defined")
+endif()
 
 if (NOT CPLEXDIR)
 	MESSAGE(FATAL_ERROR "CPLEXDIR not defined")
@@ -107,7 +107,7 @@ set_target_properties(libmodel_antares-swap
 
 #######
 	
-target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP)
+target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP USE_SIRIUS)
 target_include_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)
 target_link_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/lib ${LIBS_INSTALL_DIR}/lib)
 
@@ -115,6 +115,7 @@ if (MSVC)
 	target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib ws2_32.lib)
 	target_link_libraries(libmodel_antares PUBLIC ${XPRESSDIR}/lib/xprs.lib)
 	target_link_libraries(libmodel_antares PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.lib)
+	target_link_libraries(libmodel_antares PUBLIC ${SIRIUSDIR}/build/Release/bib_solveur.lib)
 else()
 	MESSAGE(FATAL_ERROR "LINUX version not finished yet")
 	#target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib)
