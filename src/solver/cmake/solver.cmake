@@ -7,12 +7,25 @@ else()
 	#set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} /wd 4101") # unused local variable
 endif()
 
-set(ORTOOLS_INSTALL_DIR "C:/Dev/RTE/installOrtools")
-set(LIBS_INSTALL_DIR "C:/Dev/RTE/ortoolsDepInstall")
+if (NOT ORTOOLS_INSTALL_DIR)
+	MESSAGE(FATAL_ERROR "ORTOOLS_INSTALL_DIR not defined")
+endif()
 
-set(SIRIUSDIR "C:/Dev/RTE/2019/NOUVEAU_SIMPLEXE")
-set(CPLEXDIR "C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex")
-set(XPRESSDIR "C:/xpressmp")
+if (NOT LIBS_INSTALL_DIR)
+	MESSAGE(FATAL_ERROR "LIBS_INSTALL_DIR for ortools not defined")
+endif()
+
+#if (NOT SIRIUSDIR)
+#	MESSAGE(FATAL_ERROR "SIRIUSDIR not defined")
+#endif()
+
+if (NOT CPLEXDIR)
+	MESSAGE(FATAL_ERROR "CPLEXDIR not defined")
+endif()
+
+if (NOT XPRESSDIR)
+	MESSAGE(FATAL_ERROR "XPRESSDIR not defined")
+endif()
 
 SET(ZLIB_ROOT ${LIBS_INSTALL_DIR})
 SET(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${LIBS_INSTALL_DIR}/lib/cmake/absl")
@@ -93,16 +106,22 @@ set_target_properties(libmodel_antares-swap
 	PROPERTIES COMPILE_FLAGS " -DANTARES_SWAP_SUPPORT=1")
 
 #######
-
-#target_compile_features(libmodel_antares PRIVATE cxx_std_11)
 	
 target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP)
 target_include_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)
 target_link_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/lib ${LIBS_INSTALL_DIR}/lib)
 
-target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib ws2_32.lib)
-target_link_libraries(libmodel_antares PUBLIC ${XPRESSDIR}/lib/xprs.lib)
-target_link_libraries(libmodel_antares PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.lib)
+if (MSVC)
+	target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib ws2_32.lib)
+	target_link_libraries(libmodel_antares PUBLIC ${XPRESSDIR}/lib/xprs.lib)
+	target_link_libraries(libmodel_antares PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.lib)
+else()
+	MESSAGE(FATAL_ERROR "LINUX version not finished yet")
+	#target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib)
+	target_link_libraries(libmodel_antares PUBLIC ${XPRESSDIR}/lib/xprs.so)
+	target_link_libraries(libmodel_antares PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.so)
+endif()
+
 target_link_libraries(libmodel_antares PRIVATE ortools)
 
 
