@@ -37,19 +37,13 @@
 
 #include "opt_fonctions.h"
 
-extern "C"
-{
-# include "../ext/Sirius_Solver/simplexe/spx_definition_arguments.h"
-# include "../ext/Sirius_Solver/simplexe/spx_fonctions.h"
-
-# include "../ext/Sirius_Solver/pne/pne_definition_arguments.h"
-# include "../ext/Sirius_Solver/pne/pne_fonctions.h"
-
-}
-
 #include <antares/logs.h>
 #include <antares/study.h>
 #include <antares/emergency.h>
+
+#include "../utils/ortools_utils.h"
+
+using namespace operations_research;
 
 
 using namespace Antares;
@@ -101,7 +95,7 @@ bool OPT_AppelDuSimplexe( PROBLEME_HEBDO * ProblemeHebdo, uint numSpace, int Num
 {
 int Var; int Cnt; double * pt; int il; int ilMax; int Classe; char PremierPassage;
 double CoutOpt; PROBLEME_ANTARES_A_RESOUDRE * ProblemeAResoudre; PROBLEME_SIMPLEXE Probleme;
-PROBLEME_SPX * ProbSpx;
+void * ProbSpx;
 
 
 
@@ -113,7 +107,7 @@ ProblemeAResoudre = ProblemeHebdo->ProblemeAResoudre;
 PremierPassage = OUI_ANTARES;
 
 Classe = ProblemeAResoudre->NumeroDeClasseDeManoeuvrabiliteActiveEnCours;
-ProbSpx = (PROBLEME_SPX *) ((ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[(int) NumIntervalle]);
+ProbSpx = ((ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[(int) NumIntervalle]);
 
 RESOLUTION:
 
@@ -125,7 +119,7 @@ else {
 
   if (ProblemeHebdo->ReinitOptimisation == OUI_ANTARES ) {	
     if ( ProbSpx != NULL ) {
-      SPX_LibererProbleme( ProbSpx );
+		delete ProbSpx;
       (ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[(int) NumIntervalle] = NULL;			
     }	
 		ProbSpx                      = NULL;
@@ -138,14 +132,10 @@ else {
 	  Probleme.Contexte            = BRANCH_AND_BOUND_OU_CUT_NOEUD;
 	  
 	  Probleme.BaseDeDepartFournie = UTILISER_LA_BASE_DU_PROBLEME_SPX;
-
 	  
-	  
-	  
-	  SPX_ModifierLeVecteurCouts( ProbSpx, ProblemeAResoudre->CoutLineaire, ProblemeAResoudre->NombreDeVariables );
-
-	  
-	  SPX_ModifierLeVecteurSecondMembre( ProbSpx, ProblemeAResoudre->SecondMembre, ProblemeAResoudre->Sens, ProblemeAResoudre->NombreDeContraintes );
+	  MPSolver * solver = (MPSolver *)ProbSpx;
+	  change_MPSolver_objective(solver, ProblemeAResoudre->CoutLineaire, ProblemeAResoudre->NombreDeVariables);
+	  change_MPSolver_rhs(solver, ProblemeAResoudre->SecondMembre, ProblemeAResoudre->Sens, ProblemeAResoudre->NombreDeContraintes);
 	}
 	
 }
@@ -197,10 +187,24 @@ Probleme.CoutsReduits                 = ProblemeAResoudre->CoutsReduits;
 Probleme.NombreDeContraintesCoupes = 0;
 
 
-ProbSpx = SPX_Simplexe( &Probleme , ProbSpx );
+MPSolver * solver = NULL;
+if (ProbSpx == NULL) {
+	solver = convert_to_MPSolver(&Probleme);
+	solver->EnableOutput();
+}
+
+ProbSpx = solver;
+auto status = solver->Solve();
+
+if (status == MPSolver::OPTIMAL || status == MPSolver::FEASIBLE) {
+	Probleme.ExistenceDUneSolution = OUI_SPX;
+} else {
+	Probleme.ExistenceDUneSolution = NON_SPX;
+}
+
 
 if ( ProbSpx != NULL ) {  
-	(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[NumIntervalle] = (void *) ProbSpx;
+	(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[NumIntervalle] = ProbSpx;
 }
 
 if ( ProblemeHebdo->ExportMPS == OUI_ANTARES) OPT_EcrireJeuDeDonneesLineaireAuFormatMPS( (void *) &Probleme, numSpace, ANTARES_SIMPLEXE );
@@ -210,7 +214,7 @@ ProblemeAResoudre->ExistenceDUneSolution = Probleme.ExistenceDUneSolution;
 if ( ProblemeAResoudre->ExistenceDUneSolution != OUI_SPX && PremierPassage == OUI_ANTARES && ProbSpx != NULL ) {
   if ( ProblemeAResoudre->ExistenceDUneSolution != SPX_ERREUR_INTERNE ) {
     
-	  SPX_LibererProbleme( ProbSpx );
+	  delete solver;
 	  
 	  if (Logs::Verbosity::Debug::enabled)
 	  {
