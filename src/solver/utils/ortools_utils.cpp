@@ -4,8 +4,9 @@ using namespace operations_research;
 
 MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 	// Create the linear solver instance
-	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CPLEX_LINEAR_PROGRAMMING);
+	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CPLEX_LINEAR_PROGRAMMING);
 	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::GLOP_LINEAR_PROGRAMMING);
+	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::SIRIUS_LINEAR_PROGRAMMING);
 
 	// Create the variables and set objective cost.
 	MPObjective* const objective = solver->MutableObjective();
