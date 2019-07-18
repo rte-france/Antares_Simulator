@@ -191,6 +191,8 @@ MPSolver * solver = NULL;
 if (ProbSpx == NULL) {
 	solver = convert_to_MPSolver(&Probleme);
 	solver->EnableOutput();
+} else {
+	solver = (MPSolver *)ProbSpx;
 }
 
 ProbSpx = solver;

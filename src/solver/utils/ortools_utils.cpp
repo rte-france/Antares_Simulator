@@ -4,8 +4,8 @@ using namespace operations_research;
 
 MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 	// Create the linear solver instance
-	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CPLEX_LINEAR_PROGRAMMING);
-	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::GLOP_LINEAR_PROGRAMMING);
+	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CPLEX_LINEAR_PROGRAMMING);
+	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::GLOP_LINEAR_PROGRAMMING);
 
 	// Create the variables and set objective cost.
 	MPObjective* const objective = solver->MutableObjective();
@@ -15,7 +15,6 @@ MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 		oss << "x" << idxVar;
 		auto x = solver->MakeNumVar(problemeSimplexe->Xmin[idxVar], problemeSimplexe->Xmax[idxVar], oss.str());
 		objective->SetCoefficient(x, problemeSimplexe->CoutLineaire[idxVar]);
-		std::cout << problemeSimplexe->CoutLineaire[idxVar]  << " * "<< x->name() << " " << x->lb() << " " << x->ub() << std::endl;
 	}
 
 	// Create constraints and set coefs
@@ -35,21 +34,13 @@ MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 		std::ostringstream oss;
 		oss << "c" << idxRow;
 		MPConstraint* const ct = solver->MakeRowConstraint(bMin, bMax, oss.str());
-		std::cout << ct->name() 
-			<< ct->lb() << " "
-			<< ct->ub()
-			<< " : ";
 		
 		int debutLigne = problemeSimplexe->IndicesDebutDeLigne[idxRow];
 		for (int idxCoef = 0; idxCoef < problemeSimplexe->NombreDeTermesDesLignes[idxRow]; ++idxCoef)
 		{
 			int pos = debutLigne + idxCoef;
 			ct->SetCoefficient(variables[problemeSimplexe->IndicesColonnes[pos]], problemeSimplexe->CoefficientsDeLaMatriceDesContraintes[pos]);
-			std::cout 
-				<< problemeSimplexe->CoefficientsDeLaMatriceDesContraintes[pos] << "*"
-				<< variables[problemeSimplexe->IndicesColonnes[pos]]->name() << " ";
 		}
-		std::cout << std::endl;
 	}
 
 	//if (problemeSimplexe->)
