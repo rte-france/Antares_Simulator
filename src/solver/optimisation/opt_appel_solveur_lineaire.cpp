@@ -123,8 +123,8 @@ else {
       (ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[(int) NumIntervalle] = NULL;			
     }	
 		ProbSpx                      = NULL;
-  	Probleme.Contexte            = SIMPLEXE_SEUL;
-	  Probleme.BaseDeDepartFournie = NON_SPX;	
+  		Probleme.Contexte            = SIMPLEXE_SEUL;
+		Probleme.BaseDeDepartFournie = NON_SPX;	
 	}
 	
 	else {
