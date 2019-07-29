@@ -12,6 +12,7 @@ extern "C"
 }
 
 operations_research::MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe);
+void extract_from_MPSolver(operations_research::MPSolver * solver, PROBLEME_SIMPLEXE * problemeSimplexe);
 
 void change_MPSolver_objective(operations_research::MPSolver * solver, double * costs, int nbVar);
 void change_MPSolver_rhs(operations_research::MPSolver * solver, double * rhs, char * sens, int nbRow);

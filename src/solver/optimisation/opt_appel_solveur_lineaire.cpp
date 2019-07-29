@@ -200,6 +200,7 @@ auto status = solver->Solve();
 
 if (status == MPSolver::OPTIMAL || status == MPSolver::FEASIBLE) {
 	Probleme.ExistenceDUneSolution = OUI_SPX;
+	extract_from_MPSolver(solver, &Probleme);
 } else {
 	Probleme.ExistenceDUneSolution = NON_SPX;
 }
@@ -239,15 +240,15 @@ if ( ProblemeAResoudre->ExistenceDUneSolution != OUI_SPX && PremierPassage == OU
 if ( ProblemeAResoudre->ExistenceDUneSolution == OUI_SPX ) {
   CoutOpt = 0.0;
 	
-	for ( Var = 0 ; Var < ProblemeAResoudre->NombreDeVariables ; Var++ ) {
-	  
-    CoutOpt+= ProblemeAResoudre->CoutLineaire[Var] * ProblemeAResoudre->X[Var];		
-		
-		pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var];
-		if ( pt != NULL ) *pt = ProblemeAResoudre->X[Var];
-		pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesCoutsReduits[Var];
-		if ( pt != NULL ) *pt = ProblemeAResoudre->CoutsReduits[Var];
-	}
+  for (Var = 0; Var < ProblemeAResoudre->NombreDeVariables; Var++) {
+
+	  CoutOpt += ProblemeAResoudre->CoutLineaire[Var] * ProblemeAResoudre->X[Var];
+
+	  pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesVariablesOptimisees[Var];
+	  if (pt != NULL) *pt = ProblemeAResoudre->X[Var];
+	  pt = ProblemeAResoudre->AdresseOuPlacerLaValeurDesCoutsReduits[Var];
+	  if (pt != NULL) *pt = ProblemeAResoudre->CoutsReduits[Var];
+  }
 
 	if (ProblemeHebdo->numeroOptimisation[NumIntervalle] == PREMIERE_OPTIMISATION)
 		ProblemeHebdo->coutOptimalSolution1[NumIntervalle] = CoutOpt;
