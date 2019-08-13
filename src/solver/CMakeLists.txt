@@ -18,14 +18,14 @@ endif(MSVC)
 
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/mps")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/branchAndBound")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/simplexe/lu")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/presolve")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/simplexe")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/pne")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/branchAndBound")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/allocateur")
-include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/pointInterieur")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/branchAndBound")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/simplexe/lu")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/presolve")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/simplexe")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/pne")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/branchAndBound")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/allocateur")
+#include_directories("${CMAKE_SOURCE_DIR}/ext/Sirius_Solver/pointInterieur")
 
 include("cmake/solver.cmake")
 include("cmake/hydro.cmake")
@@ -134,7 +134,7 @@ macro(solver_app name swap)
 			libantares-solver-ts-generator-swap
 #			libantares-rtesolver-swap
 			libmodel_antares-swap
-			libsolver_antares-swap
+			#libsolver_antares-swap
 			libantares-core-swap)
 		set_target_properties(${exec_name} PROPERTIES COMPILE_FLAGS " -DANTARES_SWAP_SUPPORT=1")
 	else()
@@ -149,7 +149,7 @@ macro(solver_app name swap)
 			libantares-solver-ts-generator
 #			libantares-rtesolver
 			libmodel_antares 
-			libsolver_antares			
+			#libsolver_antares		
 			libantares-core)
 	endif()
 

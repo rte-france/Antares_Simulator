@@ -39,11 +39,11 @@
 
 extern "C"
 {
-# include "../ext/Sirius_Solver/simplexe/spx_definition_arguments.h"
-# include "../ext/Sirius_Solver/simplexe/spx_fonctions.h"
+# include "spx_definition_arguments.h"
+# include "spx_fonctions.h"
 
-# include "../ext/Sirius_Solver/pne/pne_definition_arguments.h"
-# include "../ext/Sirius_Solver/pne/pne_fonctions.h"
+# include "pne_definition_arguments.h"
+# include "pne_fonctions.h"
 
 }
 
@@ -234,14 +234,28 @@ if (withOrtool) {
 }
 else
 {
-	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx);
+	Probleme.AffichageDesTraces = OUI_SPX;
+	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx, NULL);
 }
 
 if ( ProbSpx != NULL ) {  
 	(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[NumIntervalle] = ProbSpx;
 }
 
-if ( ProblemeHebdo->ExportMPS == OUI_ANTARES) OPT_EcrireJeuDeDonneesLineaireAuFormatMPS( (void *) &Probleme, numSpace, ANTARES_SIMPLEXE );
+if (ProblemeHebdo->ExportMPS == OUI_ANTARES) {
+	if (withOrtool) {
+		auto& study = *Antares::Data::Study::Current::Get();
+		
+		int const year = study.runtime->currentYear[numSpace] + 1;
+		int const week = study.runtime->weekInTheYear[numSpace] + 1;
+		int const n = ProblemeHebdo->numeroOptimisation[NumIntervalle];
+		std::stringstream buffer;
+		buffer << study.folderOutput<<Yuni::IO::Separator<<"problem-" << year << "-" << week << "-" << n << ".mps";
+		solver->Write(buffer.str());
+	}
+	else
+		OPT_EcrireJeuDeDonneesLineaireAuFormatMPS((void *)&Probleme, numSpace, ANTARES_SIMPLEXE);
+}
 
 ProblemeAResoudre->ExistenceDUneSolution = Probleme.ExistenceDUneSolution;
 
@@ -397,7 +411,7 @@ ProblemePourPne.ToleranceDOptimalite         = 1.e-4;
 
 
 
-PNE_Solveur( &ProblemePourPne );
+PNE_Solveur( &ProblemePourPne, NULL);
 
 if ( ProblemeHebdo->ExportMPS == OUI_ANTARES) OPT_EcrireJeuDeDonneesLineaireAuFormatMPS( (void *) &ProblemePourPne, numSpace, ANTARES_PNE );
 

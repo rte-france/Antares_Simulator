@@ -38,11 +38,11 @@
 
 extern "C"
 {
-# include "../ext/Sirius_Solver/simplexe/spx_definition_arguments.h"
-# include "../ext/Sirius_Solver/simplexe/spx_fonctions.h"
+# include "spx_definition_arguments.h"
+# include "spx_fonctions.h"
 
-# include "../ext/Sirius_Solver/pne/pne_definition_arguments.h"
-# include "../ext/Sirius_Solver/pne/pne_fonctions.h"
+# include "pne_definition_arguments.h"
+# include "pne_fonctions.h"
 
 }
 
@@ -620,7 +620,7 @@ if ( ProblemeHebdo->SolveurDuProblemeLineaire == ANTARES_SIMPLEXE ) {
   Probleme.NombreDeContraintesCoupes = 0;
 
   ProbSpx = NULL;
-  ProbSpx = SPX_Simplexe( &Probleme , ProbSpx );
+  ProbSpx = SPX_Simplexe( &Probleme , ProbSpx, NULL );
 
   if ( Probleme.ExistenceDUneSolution == OUI_SPX ) {
     
@@ -663,7 +663,7 @@ else {
   ProblemePourPne.NombreMaxDeSolutionsEntieres = -1;   
   ProblemePourPne.ToleranceDOptimalite         = 1.e-4; 
 
-  PNE_Solveur( &ProblemePourPne );
+  PNE_Solveur( &ProblemePourPne, NULL );
 
   if ( ProblemePourPne.ExistenceDUneSolution == SOLUTION_OPTIMALE_TROUVEE ) {
     

@@ -97,7 +97,7 @@ set(RTESOLVER_OPT
 set(SRC_MODEL
 	${RTESOLVER_OPT}
 )
-add_subdirectory("${PROJECT_SOURCE_DIR}/../ext/Sirius_Solver" "${PROJECT_SOURCE_DIR}/../ext/Sirius_Solver")
+#add_subdirectory("${PROJECT_SOURCE_DIR}/../ext/Sirius_Solver" "${PROJECT_SOURCE_DIR}/../ext/Sirius_Solver")
 add_library(libmodel_antares STATIC  ${SRC_MODEL})
 
 add_library(libmodel_antares-swap STATIC  ${SRC_MODEL})
@@ -106,6 +106,8 @@ set_target_properties(libmodel_antares-swap
 	PROPERTIES COMPILE_FLAGS " -DANTARES_SWAP_SUPPORT=1")
 
 #######
+
+include_directories(${SIRIUSDIR}/include)
 	
 target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP USE_SIRIUS)
 target_include_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)

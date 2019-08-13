@@ -67,7 +67,8 @@ macro(add_solver_hydro  suffix)
 	target_link_libraries(libantares-solver-hydro${suffix}
 #		libantares-rtesolver${suffix}
 		libmodel_antares${suffix} 
-		libsolver_antares${suffix})
+		#libsolver_antares${suffix}
+		)
 
 
 endmacro()

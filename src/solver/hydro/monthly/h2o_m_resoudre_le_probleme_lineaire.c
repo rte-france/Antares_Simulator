@@ -36,8 +36,8 @@
   {
 # endif
 
-# include "../ext/Sirius_Solver/simplexe/spx_definition_arguments.h"
-# include "../ext/Sirius_Solver/simplexe/spx_fonctions.h"
+# include "spx_definition_arguments.h"
+# include "spx_fonctions.h"
 
 # ifdef __CPLUSPLUS
   }
@@ -146,7 +146,7 @@ Probleme->CoutsReduits                 = ProblemeLineairePartieVariable->CoutsRe
 Probleme->NombreDeContraintesCoupes = 0;
 
 
-ProbSpx = SPX_Simplexe( Probleme , ProbSpx );
+ProbSpx = SPX_Simplexe( Probleme , ProbSpx, NULL);
 
 if ( ProbSpx != NULL ) {
   ProblemeHydraulique->ProblemeSpx[NumeroDeReservoir] = (void *) ProbSpx;		
