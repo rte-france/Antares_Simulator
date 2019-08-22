@@ -44,6 +44,7 @@ extern "C"
 
 # include "pne_definition_arguments.h"
 # include "pne_fonctions.h"
+#include "srs_api.h"
 
 }
 
@@ -106,7 +107,6 @@ bool OPT_AppelDuSimplexe( PROBLEME_HEBDO * ProblemeHebdo, uint numSpace, int Num
 int Var; int Cnt; double * pt; int il; int ilMax; int Classe; char PremierPassage;
 double CoutOpt; PROBLEME_ANTARES_A_RESOUDRE * ProblemeAResoudre; PROBLEME_SIMPLEXE Probleme;
 void * ProbSpx; bool withOrtool = true;
-
 
 
 
@@ -235,8 +235,28 @@ if (withOrtool) {
 else
 {
 	Probleme.AffichageDesTraces = OUI_SPX;
-	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx, NULL);
+	SPX_PARAMS * spx_params = newDefaultSpxParams();
+	spx_params->VERBOSE_SPX = 1;
+
+	//printf("copie avant\n");
+	//{
+	//	SRS_PROBLEM * probCopy = SRScreateprob();
+	//	SRScopy_from_problem_simplexe(probCopy, &Probleme);
+	//	SRSoptimize(probCopy);
+	//}
+
+	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx, spx_params);
+
+	//printf("copie apres\n");
+	//
+	//{
+	//	SRS_PROBLEM * probCopy = SRScreateprob();
+	//	SRScopy_from_problem_simplexe(probCopy, &Probleme);
+	//	SRSoptimize(probCopy);
+	//}
 }
+
+//exit(0);
 
 if ( ProbSpx != NULL ) {  
 	(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[NumIntervalle] = ProbSpx;
@@ -245,12 +265,12 @@ if ( ProbSpx != NULL ) {
 if (ProblemeHebdo->ExportMPS == OUI_ANTARES) {
 	if (withOrtool) {
 		auto& study = *Antares::Data::Study::Current::Get();
-		
+
 		int const year = study.runtime->currentYear[numSpace] + 1;
 		int const week = study.runtime->weekInTheYear[numSpace] + 1;
 		int const n = ProblemeHebdo->numeroOptimisation[NumIntervalle];
 		std::stringstream buffer;
-		buffer << study.folderOutput<<Yuni::IO::Separator<<"problem-" << year << "-" << week << "-" << n << ".mps";
+		buffer << study.folderOutput << Yuni::IO::Separator << "problem-" << year << "-" << week << "-" << n << ".mps";
 		solver->Write(buffer.str());
 	}
 	else

@@ -107,7 +107,7 @@ set_target_properties(libmodel_antares-swap
 
 #######
 
-include_directories(${SIRIUSDIR}/include)
+include_directories(${SIRIUSDIR}/includes)
 	
 target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP USE_SIRIUS)
 target_include_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)
