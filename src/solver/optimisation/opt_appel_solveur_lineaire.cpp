@@ -154,6 +154,8 @@ else {
 		  MPSolver * solver = (MPSolver *)ProbSpx;
 		  change_MPSolver_objective(solver, ProblemeAResoudre->CoutLineaire, ProblemeAResoudre->NombreDeVariables);
 		  change_MPSolver_rhs(solver, ProblemeAResoudre->SecondMembre, ProblemeAResoudre->Sens, ProblemeAResoudre->NombreDeContraintes);
+		  Probleme.TypeDeVariable = ProblemeAResoudre->TypeDeVariable;
+		  change_MPSolver_variables_bounds(solver, ProblemeAResoudre->Xmin, ProblemeAResoudre->Xmax, ProblemeAResoudre->NombreDeVariables, &Probleme);
 	  }
 	  else {
 		  SPX_ModifierLeVecteurCouts((PROBLEME_SPX *)ProbSpx, ProblemeAResoudre->CoutLineaire, ProblemeAResoudre->NombreDeVariables);
@@ -255,8 +257,6 @@ else
 	//	SRSoptimize(probCopy);
 	//}
 }
-
-//exit(0);
 
 if ( ProbSpx != NULL ) {  
 	(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[Classe])->ProblemeSpx[NumIntervalle] = ProbSpx;

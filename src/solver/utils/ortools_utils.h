@@ -16,3 +16,4 @@ void extract_from_MPSolver(operations_research::MPSolver * solver, PROBLEME_SIMP
 
 void change_MPSolver_objective(operations_research::MPSolver * solver, double * costs, int nbVar);
 void change_MPSolver_rhs(operations_research::MPSolver * solver, double * rhs, char * sens, int nbRow);
+void change_MPSolver_variables_bounds(operations_research::MPSolver * solver, double * bMin, double * bMax, int nbVar, PROBLEME_SIMPLEXE * problemeSimplexe);

@@ -86,9 +86,26 @@ void change_MPSolver_objective(MPSolver * solver, double * costs, int nbVar) {
 	}
 }
 
+void change_MPSolver_variables_bounds(MPSolver * solver, double * bMin, double * bMax,  int nbVar, PROBLEME_SIMPLEXE * problemeSimplexe) {
+	auto & variables = solver->variables();
+	for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
+		double min_l = (
+			(problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_NON_BORNEE) || (problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_BORNEE_SUPERIEUREMENT) ?
+			-MPSolver::infinity() :
+			bMin[idxVar]);
+		double max_l = (
+			(problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_NON_BORNEE) || (problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_BORNEE_INFERIEUREMENT) ?
+			MPSolver::infinity() :
+			bMax[idxVar]);
+		auto & var = variables[idxVar];
+		var->SetBounds(min_l, max_l);
+	}
+}
+
 void change_MPSolver_rhs(MPSolver * solver, double * rhs, char * sens, int nbRow) {
 	auto & constraints = solver->constraints();
 	for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
+		printf("rhs[idxRow] %d %lf %c\n", idxRow, rhs[idxRow], sens[idxRow]);
 		if (sens[idxRow] == '=')
 			constraints[idxRow]->SetBounds(rhs[idxRow], rhs[idxRow]);
 		else if (sens[idxRow] == '<')
