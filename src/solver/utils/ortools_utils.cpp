@@ -15,16 +15,9 @@ MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 	for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
 		std::ostringstream oss;
 		oss << "x" << idxVar;
-		double min_l = (
-			(problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_NON_BORNEE) || (problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_BORNEE_SUPERIEUREMENT) ?
-			-MPSolver::infinity() :
-			problemeSimplexe->Xmin[idxVar]);
-		double max_l = (
-			(problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_NON_BORNEE) || (problemeSimplexe->TypeDeVariable[idxVar] == VARIABLE_BORNEE_INFERIEUREMENT) ?
-			MPSolver::infinity() :
-			problemeSimplexe->Xmax[idxVar]);
+		double min_l = problemeSimplexe->Xmin[idxVar];
+		double max_l = problemeSimplexe->Xmax[idxVar];
 		auto x = solver->MakeNumVar(min_l, max_l, oss.str());
-		x->SetBounds(min_l, max_l);
 		objective->SetCoefficient(x, problemeSimplexe->CoutLineaire[idxVar]);
 	}
 
