@@ -217,7 +217,7 @@ MPSolver * solver = NULL;
 if (withOrtool) {
 	if (ProbSpx == NULL) {
 		solver = convert_to_MPSolver(&Probleme);
-		solver->EnableOutput();
+		//solver->EnableOutput();
 	}
 	else {
 		solver = (MPSolver *)ProbSpx;
@@ -236,26 +236,10 @@ if (withOrtool) {
 }
 else
 {
-	Probleme.AffichageDesTraces = OUI_SPX;
+	Probleme.AffichageDesTraces = NON_SPX;
 	SPX_PARAMS * spx_params = newDefaultSpxParams();
-	spx_params->VERBOSE_SPX = 1;
-
-	//printf("copie avant\n");
-	//{
-	//	SRS_PROBLEM * probCopy = SRScreateprob();
-	//	SRScopy_from_problem_simplexe(probCopy, &Probleme);
-	//	SRSoptimize(probCopy);
-	//}
 
 	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx, spx_params);
-
-	//printf("copie apres\n");
-	//
-	//{
-	//	SRS_PROBLEM * probCopy = SRScreateprob();
-	//	SRScopy_from_problem_simplexe(probCopy, &Probleme);
-	//	SRSoptimize(probCopy);
-	//}
 }
 
 if ( ProbSpx != NULL ) {  

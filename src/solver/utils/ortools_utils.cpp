@@ -24,6 +24,7 @@ MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe) {
 			MPSolver::infinity() :
 			problemeSimplexe->Xmax[idxVar]);
 		auto x = solver->MakeNumVar(min_l, max_l, oss.str());
+		x->SetBounds(min_l, max_l);
 		objective->SetCoefficient(x, problemeSimplexe->CoutLineaire[idxVar]);
 	}
 
@@ -105,7 +106,6 @@ void change_MPSolver_variables_bounds(MPSolver * solver, double * bMin, double *
 void change_MPSolver_rhs(MPSolver * solver, double * rhs, char * sens, int nbRow) {
 	auto & constraints = solver->constraints();
 	for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
-		printf("rhs[idxRow] %d %lf %c\n", idxRow, rhs[idxRow], sens[idxRow]);
 		if (sens[idxRow] == '=')
 			constraints[idxRow]->SetBounds(rhs[idxRow], rhs[idxRow]);
 		else if (sens[idxRow] == '<')
