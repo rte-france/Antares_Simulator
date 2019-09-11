@@ -620,7 +620,7 @@ if ( ProblemeHebdo->SolveurDuProblemeLineaire == ANTARES_SIMPLEXE ) {
   Probleme.NombreDeContraintesCoupes = 0;
 
   ProbSpx = NULL;
-  ProbSpx = SPX_Simplexe( &Probleme , ProbSpx, NULL );
+  ProbSpx = SPX_Simplexe(&Probleme, ProbSpx);// , NULL );
 
   if ( Probleme.ExistenceDUneSolution == OUI_SPX ) {
     
@@ -663,7 +663,7 @@ else {
   ProblemePourPne.NombreMaxDeSolutionsEntieres = -1;   
   ProblemePourPne.ToleranceDOptimalite         = 1.e-4; 
 
-  PNE_Solveur( &ProblemePourPne, NULL );
+  PNE_Solveur(&ProblemePourPne);// , NULL );
 
   if ( ProblemePourPne.ExistenceDUneSolution == SOLUTION_OPTIMALE_TROUVEE ) {
     

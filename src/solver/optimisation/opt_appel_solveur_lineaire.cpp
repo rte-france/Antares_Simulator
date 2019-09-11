@@ -237,9 +237,9 @@ if (withOrtool) {
 else
 {
 	Probleme.AffichageDesTraces = NON_SPX;
-	SPX_PARAMS * spx_params = newDefaultSpxParams();
+	//SPX_PARAMS * spx_params = newDefaultSpxParams();
 
-	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx, spx_params);
+	ProbSpx = SPX_Simplexe(&Probleme, (PROBLEME_SPX *)ProbSpx);// , spx_params);
 }
 
 if ( ProbSpx != NULL ) {  
@@ -415,7 +415,7 @@ ProblemePourPne.ToleranceDOptimalite         = 1.e-4;
 
 
 
-PNE_Solveur( &ProblemePourPne, NULL);
+PNE_Solveur(&ProblemePourPne);// , NULL);
 
 if ( ProblemeHebdo->ExportMPS == OUI_ANTARES) OPT_EcrireJeuDeDonneesLineaireAuFormatMPS( (void *) &ProblemePourPne, numSpace, ANTARES_PNE );
 
