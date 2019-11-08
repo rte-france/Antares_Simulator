@@ -1,4 +1,4 @@
-source $(dirname $0)/utils.sh
+source $(dirname $0)/config.sh
 
 export ORTOOLSDEPDIR="C:/Dev/RTE/ortoolsDepInstall"
 export SIRIUSDIR="C:/Dev/RTE/2019/SiriusAntaresV7"
