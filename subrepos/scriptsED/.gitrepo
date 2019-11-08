@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@edgitlab.eurodecision.com:RTE/ortoolsdevs.git
+	branch = master
+	commit = 56a68486f4add6987b771a571d5f7f3732056c73
+	parent = 191c214aece0d3b766a33e66215e63a3548dd1c7
+	method = merge
+	cmdver = 0.4.0
