@@ -8,7 +8,7 @@ function lookForLib() {
 	fi
 }
 
-function fixTemplateVisualStudioProblem()
+function fixTemplateVisualStudioProblem(){
 	grep -q "^\s*template <bool only_allow_zero_cost_column>" ${ORTOOLS_SRC_PATH}/ortools/glop/initial_basis.*
 	res=$?
 

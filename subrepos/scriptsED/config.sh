@@ -1,5 +1,3 @@
-source $(dirname $0)/../utils.sh
-
 export CHOSEN_COMPILER="Visual Studio 15 2017 Win64"
 
 # OR-Tools flags
@@ -35,7 +33,4 @@ export ORTOOLS_DEPENDENCIES_INSTALL_PATH="${ORTOOLS_BUILD_PATH}/dependencies/ins
 export ANTARES_SRC_PATH="$PWD/src"
 export ANTARES_BUILD_PATH="$PWD/src"
 
-
-
-
-
+source $(dirname $0)/../utils.sh
