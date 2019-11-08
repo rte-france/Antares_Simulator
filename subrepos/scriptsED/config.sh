@@ -7,13 +7,11 @@ export ORTOOLS_TESTING_SWITCH="OFF" # build and run tests after building OR-Tool
 
 export ORTOOLS_SIRIUS_SWITCH="ON" # activate Sirius interface
 export ORTOOLS_XPRESS_SWITCH="ON" # activate Xpress interface
-export ORTOOLS_CPLEX_SWITCH="ON"  # activate Cplex interface
-
-
+export ORTOOLS_CPLEX_SWITCH="OFF"  # activate Cplex interface
 
 # Pathes to extern solver installs
-export CPLEXDIR="C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex"
-#export XPRESSDIR="C:/xpressmp"
+#export CPLEXDIR="C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex"
+export XPRESSDIR="C:/xpressmp"
 
 ####                                ####
 #### DO NOT CHANGE BELOW THIS POINT ####
