@@ -1,0 +1,99 @@
+language: cpp
+cache:
+  ccache: true
+  pip: true
+
+matrix:
+  include:
+    # Makefile builder
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=make LANGUAGE=cc
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=make LANGUAGE=python2
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=make LANGUAGE=python3
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=make LANGUAGE=java
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=make LANGUAGE=dotnet
+
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=make LANGUAGE=cc
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=make LANGUAGE=python2
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=make LANGUAGE=python3
+    - os: osx
+      # to get JDK 8
+      # https://docs.travis-ci.com/user/reference/osx/#jdk-and-macos
+      osx_image: xcode9.3
+      compiler: clang
+      env: BUILDER=make LANGUAGE=java
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=make LANGUAGE=dotnet
+    # CMake Build Generator
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env: BUILDER=cmake
+    - os: linux
+      dist: xenial
+      compiler: clang
+      env: BUILDER=cmake
+
+    - os: osx
+      osx_image: xcode10.1
+      compiler: gcc
+      env: BUILDER=cmake
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=cmake
+    # Bazel builds and tests
+    - os: linux
+      dist: xenial
+      cache: false
+      addons:
+        apt:
+          sources:
+            - sourceline: "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8"
+              key_url: "https://bazel.build/bazel-release.pub.gpg"
+          packages:
+            - bazel
+      env: BUILDER=bazel
+  # Jobs too long
+  allow_failures:
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      env: BUILDER=make LANGUAGE=dotnet
+    - os: linux
+      dist: xenial
+      env: BUILDER=bazel
+
+install:
+  - ./.travis/install.sh
+
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export JAVA_HOME=`/usr/libexec/java_home -v 1.8`; fi
+
+script:
+  - ./.travis/script.sh

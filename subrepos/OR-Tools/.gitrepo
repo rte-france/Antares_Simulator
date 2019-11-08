@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/rte-france/or-tools.git
+	branch = rte-antares-ortools-sirius
+	commit = 7a3221be11876a845108df96bffb224eb51a2c7f
+	parent = e5449e095afaa94d4417427fed39dfd1d4313ec3
+	method = merge
+	cmdver = 0.4.0
