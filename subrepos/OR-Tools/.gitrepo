@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/rte-france/or-tools.git
 	branch = rte-antares-ortools-sirius
-	commit = 7a3221be11876a845108df96bffb224eb51a2c7f
-	parent = e5449e095afaa94d4417427fed39dfd1d4313ec3
+	commit = fc589c94562a5ba17cf793c7afbaca681dea616c
+	parent = 318190b49e39030d7168a2a40ba6f172cf0540b8
 	method = merge
 	cmdver = 0.4.0
