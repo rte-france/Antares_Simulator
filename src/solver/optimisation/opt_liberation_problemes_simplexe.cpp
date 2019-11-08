@@ -69,7 +69,7 @@
 
 extern "C"
 {
-#include "spx_fonctions.h"
+	#include "../utils/ortools_wrapper.h"
 }
 
 using namespace Antares;
@@ -98,8 +98,12 @@ if (ProblemeAResoudre) {
 			for ( NumIntervalle = 0 ; NumIntervalle < NbIntervalles ; NumIntervalle++ ) {
 				ProbSpx = (PROBLEME_SPX *) ((ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[i])->ProblemeSpx[NumIntervalle]);
 				if ( ProbSpx != NULL ) {
-					SPX_LibererProbleme( ProbSpx );
-					(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[i])->ProblemeSpx[NumIntervalle] = NULL;
+					if(withOrtool_c) {
+						ORTOOLS_LibererProbleme( ProbSpx );
+					} else {
+						SPX_LibererProbleme( ProbSpx );
+						(ProblemeAResoudre->ProblemesSpxDUneClasseDeManoeuvrabilite[i])->ProblemeSpx[NumIntervalle] = NULL;
+					}
 				}
 			}
 		}

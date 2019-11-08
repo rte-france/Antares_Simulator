@@ -3,17 +3,13 @@
 #include "ortools/linear_solver/linear_solver.h"
 extern "C"
 {
-# include "../ext/Sirius_Solver/simplexe/spx_definition_arguments.h"
-# include "../ext/Sirius_Solver/simplexe/spx_fonctions.h"
-
-# include "../ext/Sirius_Solver/pne/pne_definition_arguments.h"
-# include "../ext/Sirius_Solver/pne/pne_fonctions.h"
-
+# include "ortools_wrapper.h"
 }
 
-operations_research::MPSolver * convert_to_MPSolver(PROBLEME_SIMPLEXE * problemeSimplexe);
-void extract_from_MPSolver(operations_research::MPSolver * solver, PROBLEME_SIMPLEXE * problemeSimplexe);
+extern bool withOrtool;
 
-void change_MPSolver_objective(operations_research::MPSolver * solver, double * costs, int nbVar);
-void change_MPSolver_rhs(operations_research::MPSolver * solver, double * rhs, char * sens, int nbRow);
-void change_MPSolver_variables_bounds(operations_research::MPSolver * solver, double * bMin, double * bMax, int nbVar, PROBLEME_SIMPLEXE * problemeSimplexe);
+size_t current_memory_usage(std::string const & message);
+
+std::string getRunName(std::string const & prefix, size_t numSpace, int numInterval, int numOptim);
+
+void ORTOOLS_EcrireJeuDeDonneesLineaireAuFormatMPS(operations_research::MPSolver * solver, size_t numSpace, int const n);
