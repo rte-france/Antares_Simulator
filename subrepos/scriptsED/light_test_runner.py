@@ -423,7 +423,13 @@ def compareRuns(study, shouldCleanNew):
 def computeReportContent(study, stats):
     try:
         td = stats["new"]["solve_time"] - stats["reference"]["solve_time"]
-        tdr = 100.0 * float(stats["new"]["solve_time"] - stats["reference"]["solve_time"]) / stats["reference"]["solve_time"]
+        if stats["reference"]["solve_time"] <= 0:
+            if stats["new"]["solve_time"] == stats["reference"]["solve_time"]:
+                tdr=0
+            else:
+                tdr=100
+        else:
+            tdr = 100.0 * float(stats["new"]["solve_time"] - stats["reference"]["solve_time"]) / stats["reference"]["solve_time"]
         mi = stats["new"]["memory_indicator"] - stats["reference"]["memory_indicator"]
         mir = 100.0 * float(stats["new"]["memory_indicator"] - stats["reference"]["memory_indicator"]) / stats["reference"]["memory_indicator"] if stats["reference"]["memory_indicator"] else 100.0 * float(stats["new"]["memory_indicator"])
         summary="""\tStatus for %s: [%s] time delta=%.3f (%.2f%%), memory indicator=%d (%.2f%%)""" % (study["name"], stats["comparison"]["status"], td, tdr, mi, mir)
@@ -535,20 +541,20 @@ def globalReport(study, stats, status, accumulator):
     entry["Statut"] = status
     for version in ["reference", "new"]:
         solve_time_by_run = stats[version]["solve_time_by_run"] if has_key(stats[version], "solve_time_by_run") else {}
-        entry["Temps total toutes résolutions %s" % version] = "%.2f" % sum(solve_time_by_run.values())
+        entry["Temps total toutes résolutions %s" % version] = "%.3f" % (sum(solve_time_by_run.values()) / 1000.0)
         entry["Indicateur mémoire %s" % version] = "%.2f" % stats[version]["memory_indicator"] if has_key(stats[version], "solve_time_by_run") else ""
         key_spx = [key for key in filter(lambda x : x[0] == "0", solve_time_by_run.keys())]
         key_pne = [key for key in filter(lambda x : x[0] == "1", solve_time_by_run.keys())]
         entry["Nombre résolutions PNE %s" % version] = "%d" % len(key_pne)
         entry["Nombre résolutions SPX %s" % version] = "%d" % len(key_spx)
-        entry["Temps total résolution SPX %s" % version] = "%.2f" % sum([solve_time_by_run[key] for key in key_spx])
-        entry["Temps première résolution SPX %s" % version] = "%.2f" % solve_time_by_run[key_spx[0]] if len(key_spx) > 0 else ""
-        entry["Temps première résolution PNE %s" % version] = "%.2f" % solve_time_by_run[key_pne[0]] if len(key_pne) > 0 else ""
+        entry["Temps total résolution SPX %s" % version] = "%.3f" % (sum([solve_time_by_run[key] for key in key_spx]) / 1000.0)
+        entry["Temps première résolution SPX %s" % version] = "%.3f" % (solve_time_by_run[key_spx[0]] / 1000.0) if len(key_spx) > 0 else ""
+        entry["Temps première résolution PNE %s" % version] = "%.3f" % (solve_time_by_run[key_pne[0]] / 1000.0) if len(key_pne) > 0 else ""
 
         run_data = []
         for key in solve_time_by_run.keys():
             pne, year, week, interval, optim = key
-            run_data.append("%s;%s;%s;%s;%s;%s;%f" % (study["name"], pne, year, week, interval, optim, solve_time_by_run[key]))
+            run_data.append("%s;%s;%s;%s;%s;%s;%f" % (study["name"], pne, year, week, interval, optim, solve_time_by_run[key] / 1000.0))
         entry["run_data"] = ("\n".join(run_data) + "\n") if len(run_data) else ""
 
     accumulator.append(entry)
@@ -631,6 +637,7 @@ def runAndCompare(configFile):
         statusList.append(status)
 
         globalReport(study, stats, status, globalStats)
+        writeGlobalReport(globalStats, config["global"]["report.path"])
 
     # display summary
     logging.info("Summary of test suite:")
@@ -640,7 +647,7 @@ def runAndCompare(configFile):
 
     # write csv reporting
     logging.info("Write report in file %s" %  config["global"]["report.path"])
-    writeGlobalReport(globalStats, config["global"]["report.path"])
+    #writeGlobalReport(globalStats, config["global"]["report.path"])
 
     # clean trash directory
     logging.info("Clean trash directory")
@@ -779,3 +786,4 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+    #main(['--config=mini.ini'])
