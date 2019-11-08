@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@edgitlab.eurodecision.com:RTE/ortoolsdevs.git
 	branch = master
-	commit = 46933b2ce38174fd02e6624c2a9a6a1d95eb2514
-	parent = f7617b57721eb76d8ee145041c1b77f95c2c7d39
+	commit = 98bdca947fbcdfcc3fd6839107a5045b1fe32622
+	parent = 7db10045eb936e5e98c742d2b6a2a918e43c49b1
 	method = merge
 	cmdver = 0.4.0
