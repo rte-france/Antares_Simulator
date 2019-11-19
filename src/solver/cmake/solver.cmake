@@ -119,16 +119,24 @@ target_compile_definitions(libmodel_antares PUBLIC USE_XPRESS USE_CPLEX NOMINMAX
 target_include_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)
 target_link_directories(libmodel_antares PUBLIC ${ORTOOLS_INSTALL_DIR}/lib ${LIBS_INSTALL_DIR}/lib)
 
+target_compile_definitions(libmodel_antares-swap PUBLIC USE_XPRESS USE_CPLEX NOMINMAX USE_GLOP USE_BOP USE_CBC USE_CLP USE_SIRIUS)
+target_include_directories(libmodel_antares-swap PUBLIC ${ORTOOLS_INSTALL_DIR}/include ${LIBS_INSTALL_DIR}/include)
+target_link_directories(libmodel_antares-swap PUBLIC ${ORTOOLS_INSTALL_DIR}/lib ${LIBS_INSTALL_DIR}/lib)
+
 if (MSVC)
 	target_link_libraries(libmodel_antares PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib ws2_32.lib)
+	target_link_libraries(libmodel_antares-swap PRIVATE ${LIBS_INSTALL_DIR}/lib/*.lib ws2_32.lib)
 	if (USE_XPRESS)
 		target_link_libraries(libmodel_antares PUBLIC ${XPRESSDIR}/lib/xprs.lib)
+		target_link_libraries(libmodel_antares-swap PUBLIC ${XPRESSDIR}/lib/xprs.lib)
 	endif()
 	if (USE_CPLEX)
 		target_link_libraries(libmodel_antares PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.lib)
+		target_link_libraries(libmodel_antares-swap PUBLIC ${CPLEXDIR}/lib/x64_windows_vs2015/stat_mda/cplex1270.lib)
 	endif()
 	if (USE_SIRIUS)
 		target_link_libraries(libmodel_antares PUBLIC ${SIRIUSDIR}/lib/Release/bib_solveur.lib)
+		target_link_libraries(libmodel_antares-swap PUBLIC ${SIRIUSDIR}/lib/Release/bib_solveur.lib)
 	endif()
 else()
 	MESSAGE(FATAL_ERROR "LINUX version not finished yet")
@@ -138,6 +146,7 @@ else()
 endif()
 
 target_link_libraries(libmodel_antares PRIVATE ortools)
+target_link_libraries(libmodel_antares-swap PRIVATE ortools)
 
 
 
