@@ -107,7 +107,7 @@ MPSolver * convert_to_MPSolver(PROBLEME_A_RESOUDRE * problemeAResoudre) {
 	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CPLEX_LINEAR_PROGRAMMING);
 	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::CLP_LINEAR_PROGRAMMING);
 	//MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::GLOP_LINEAR_PROGRAMMING);
-	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::SIRIUS_LINEAR_PROGRAMMING);
+	MPSolver * solver = new MPSolver("simple_lp_program", MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING);
 
 	// Create the variables and set objective cost.
 	transferVariables(solver, problemeAResoudre->Xmin, problemeAResoudre->Xmax, problemeAResoudre->CoutLineaire,  problemeAResoudre->NombreDeVariables);
@@ -119,21 +119,21 @@ MPSolver * convert_to_MPSolver(PROBLEME_A_RESOUDRE * problemeAResoudre) {
 	return solver;
 }
 
-void extract_from_MPSolver(MPSolver * solver, PROBLEME_A_RESOUDRE * problemeSimplexe) {
+void extract_from_MPSolver(MPSolver * solver, PROBLEME_A_RESOUDRE * problemePne) {
 	auto & variables = solver->variables();
-	int nbVar = problemeSimplexe->NombreDeVariables;
+	int nbVar = problemePne->NombreDeVariables;
 
 	// Extracting variable values and reduced costs
 	for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
 		auto & var = variables[idxVar];
-		problemeSimplexe->X[idxVar] = var->solution_value();
+		problemePne->X[idxVar] = var->solution_value();
 	}
 
 	auto & constraints = solver->constraints();
-	int nbRow = problemeSimplexe->NombreDeContraintes;
+	int nbRow = problemePne->NombreDeContraintes;
 	for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
 		auto & row = constraints[idxRow];
-		problemeSimplexe->VariablesDualesDesContraintes[idxRow] = row->dual_value();
+		problemePne->VariablesDualesDesContraintes[idxRow] = row->dual_value();
 	}
 }
 
@@ -212,8 +212,8 @@ std::string getRunName(std::string const & prefix, size_t numSpace, int numInter
 	return buffer.str();
 }
 
-bool solveAndManageStatus(operations_research::MPSolver * solver, int & resultStatus) {
-	auto status = solver->Solve();
+bool solveAndManageStatus(operations_research::MPSolver * solver, int & resultStatus, MPSolverParameters& params) {
+	auto status = solver->Solve(params);
 
 	if (status == MPSolver::OPTIMAL || status == MPSolver::FEASIBLE) {
 		resultStatus = OUI_SPX;
@@ -237,7 +237,9 @@ void * solveProblem(PROBLEME_SIMPLEXE * Probleme, void * ProbSpx) {
 		solver = (MPSolver *)ProbSpx;
 	}
 
-	if(solveAndManageStatus(solver, Probleme->ExistenceDUneSolution)) {
+	MPSolverParameters params;
+
+	if(solveAndManageStatus(solver, Probleme->ExistenceDUneSolution, params)) {
 		extract_from_MPSolver(solver, Probleme);
 	}
 
@@ -256,9 +258,21 @@ void * solveProblem(PROBLEME_A_RESOUDRE * Probleme, void * ProbSpx) {
 		solver = (MPSolver *)ProbSpx;
 	}
 
-	if(solveAndManageStatus(solver, Probleme->ExistenceDUneSolution)) {
+	MPSolverParameters params;
+	if (Probleme->FaireDuPresolve == NON_PNE) {
+		params.SetIntegerParam(MPSolverParameters::PRESOLVE, MPSolverParameters::PRESOLVE_OFF);
+	}
+	else
+	{
+		params.SetIntegerParam(MPSolverParameters::PRESOLVE, MPSolverParameters::PRESOLVE_ON);
+	}
+
+	if(solveAndManageStatus(solver, Probleme->ExistenceDUneSolution, params)) {
 		extract_from_MPSolver(solver, Probleme);
 	}
+
+	delete solver;
+	solver = nullptr;
 
 	return solver;
 }

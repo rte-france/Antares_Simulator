@@ -380,8 +380,7 @@ ProblemePourPne.CoupesLiftAndProject       = NON_PNE;
 ProblemePourPne.AffichageDesTraces = NON_PNE;
 ProblemePourPne.FaireDuPresolve = OUI_PNE ;
 if ( ProblemeAResoudre->NumeroDOptimisation == DEUXIEME_OPTIMISATION ) {
-  ProblemePourPne.FaireDuPresolve = NON_PNE; 
-
+  ProblemePourPne.FaireDuPresolve = NON_PNE;
 }
 
 
@@ -389,7 +388,7 @@ if ( ProblemeAResoudre->NumeroDOptimisation == DEUXIEME_OPTIMISATION ) {
 ProblemePourPne.TempsDExecutionMaximum       = 0;  
 ProblemePourPne.NombreMaxDeSolutionsEntieres = -1;   
 ProblemePourPne.ToleranceDOptimalite         = 1.e-4; 
-
+current_memory_usage("before resolutionPNE");
 if (withOrtool) {
 
 	ORTOOLS_Simplexe_PNE(&ProblemePourPne, NULL);
@@ -401,6 +400,7 @@ if (withOrtool) {
 	if ( ProblemeHebdo->ExportMPS == OUI_ANTARES) OPT_EcrireJeuDeDonneesLineaireAuFormatMPS( (void *) &ProblemePourPne, numSpace, ANTARES_PNE );
 
 }
+current_memory_usage("after resolutionPNE");
 
 ProblemeAResoudre->ExistenceDUneSolution = ProblemePourPne.ExistenceDUneSolution;
 
