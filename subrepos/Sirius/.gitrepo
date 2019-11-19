@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/rte-france/temp-pne.git
 	branch = pne_from_antares
-	commit = 67c16754f127b6fab154786a2f1a3ebc80d366d8
-	parent = d198499750451f520772be84736354d862a0519b
+	commit = e407f5e1f9e9d4ff0c9069aac4ea9b14f5ba2ba4
+	parent = f81e999d789c638eb636cca7e8d008a3ffaf67db
 	method = merge
 	cmdver = 0.4.0
