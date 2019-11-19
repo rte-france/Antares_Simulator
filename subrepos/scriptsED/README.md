@@ -1,3 +1,29 @@
+# POC AntaresV7 avec OR-Tools
+## Procédure de build simplifiée
+Dans une console git-bash.
+```bash
+git clone https://github.com/rte-france/Antares_Simulator.git -b dev_ql Antares_Simulator
+cd Antares_Simulator
+```
+__Suivre la procédure du INSTALL.txt mais s'arrêter juste avant de lancer cmake (partie 2.2)__
+
+Editer subrepos/scriptsED/config.sh si :
+- Vous voulez changer de compilateur (Défaut :Visual Studio 15 2017 Win64)
+- La variable d'environnement XPRESSDIR n'a pas été défini correctement
+- Vous voulez activer CPLEX (changer ORTOOLS_CPLEX_SWITCH et définir CPLEXDIR correctement)
+
+Dans le répertoire Antares_Simulator __(donc pas src !!!)__
+```bash
+bash subrepos/scriptsED/Windows/0_FullChainAuto.sh
+```
+
+---
+---
+---
+---
+
+
+
 # Sirius API
 # Table of Contents
 
