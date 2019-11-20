@@ -513,6 +513,11 @@ macro(ADD_ANTARES_CORE name)
 	else()
 		target_link_libraries(libantares-core${exec_name} uuid)
 	endif()
+	
+	IF (ED_SPECIFIC)
+		add_compile_definitions( ED_SPECIFIC )
+		#target_compile_definitions(libantares-core${exec_name} PUBLIC ED_SPECIFIC)
+	ENDIF (ED_SPECIFIC)
 
 endmacro()
 

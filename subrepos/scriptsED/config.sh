@@ -1,17 +1,17 @@
-export CHOSEN_COMPILER="Visual Studio 15 2017 Win64"
+export CHOSEN_COMPILER="Unix Makefiles"
 
 # OR-Tools flags
-export ORTOOLS_BUILD_DEPENDENCIES_MP="ON" # activate parallel build of dependencies if possible (/MP)
+export ORTOOLS_BUILD_DEPENDENCIES_MP="OFF" # activate parallel build of dependencies if possible (/MP)
 export ORTOOLS_PYTHON_SWITCH="OFF" # build python version of OR-Tools
 export ORTOOLS_TESTING_SWITCH="OFF" # build and run tests after building OR-Tools
 
 export ORTOOLS_SIRIUS_SWITCH="ON" # activate Sirius interface
-export ORTOOLS_XPRESS_SWITCH="ON" # activate Xpress interface
+export ORTOOLS_XPRESS_SWITCH="OFF" # activate Xpress interface
 export ORTOOLS_CPLEX_SWITCH="OFF"  # activate Cplex interface
 
 # Pathes to extern solver installs
 #export CPLEXDIR="C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex"
-export XPRESSDIR="C:/xpressmp"
+#export XPRESSDIR="C:/xpressmp"
 
 ####                                ####
 #### DO NOT CHANGE BELOW THIS POINT ####

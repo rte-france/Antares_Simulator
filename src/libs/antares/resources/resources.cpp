@@ -31,6 +31,15 @@
 #include "../logs.h"
 #include "../config.h"
 
+#ifdef __unix__
+#ifdef ED_SPECIFIC
+namespace Yuni {
+	template<>
+	CString<128u, true>::~CString() {};
+}
+#endif
+#endif
+
 using namespace Yuni;
 
 
