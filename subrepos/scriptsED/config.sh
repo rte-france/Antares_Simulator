@@ -13,6 +13,11 @@ export ORTOOLS_CPLEX_SWITCH="OFF"  # activate Cplex interface
 #export CPLEXDIR="C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex"
 #export XPRESSDIR="C:/xpressmp"
 
+if [ "${ORTOOLS_XPRESS_SWITCH}x" == "ONx" ]; then
+	echo "XPRESSDIR : ${XPRESSDIR}"; fi
+if [ "${ORTOOLS_CPLEX_SWITCH}x" == "ONx" ]; then
+	echo "CPLEXDIR : ${CPLEXDIR}"; fi
+
 ####                                ####
 #### DO NOT CHANGE BELOW THIS POINT ####
 ####                                ####
