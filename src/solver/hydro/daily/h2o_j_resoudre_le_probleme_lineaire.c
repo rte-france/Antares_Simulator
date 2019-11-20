@@ -147,7 +147,7 @@ Probleme->CoutsReduits                 = ProblemeLineairePartieVariable->CoutsRe
 Probleme->NombreDeContraintesCoupes = 0;
 
 
-ProbSpx = SPX_Simplexe( Probleme , ProbSpx, NULL);
+ProbSpx = SPX_Simplexe( Probleme , ProbSpx);
 
 if ( ProbSpx != NULL ) {	
   ProblemeHydraulique->ProblemeSpx[NumeroDeProbleme] = (void *) ProbSpx;		
