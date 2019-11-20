@@ -1,5 +1,11 @@
 # POC AntaresV7 avec OR-Tools
 ## Procédure de build simplifiée
+Cette procédure permet de compiler :
+- La dll bib_solveur.dll (Sirius)
+- La lib OR-Tools et ses dépendances
+- La cible __antares-7.0-solver__ avec Sirius via OR-Tools activé
+- Les autres cibles Antares sont compilable de manière classique via Visual Studio
+
 Dans une console git-bash.
 ```bash
 git clone https://github.com/rte-france/Antares_Simulator.git -b dev_ql Antares_Simulator
@@ -16,6 +22,13 @@ Dans le répertoire Antares_Simulator __(donc pas src !!!)__
 ```bash
 bash subrepos/scriptsED/Windows/0_FullChainAuto.sh
 ```
+Vous obtiendrez alors dans src/solver/Release l'exe __antares-7.0-solver.exe__
+
+### Utilisation de l'exe Antares obtenu
+Pour fonctionner, il doit être accompagné des dlls suivantes :
+- bib_solveur.dll => ici _subrepos/Sirius/build/install/lib/Release/bib_solveur.dll_
+- zlib.dll => ici _subrepos/OR-Tools/build/dependencies/install/bin/zlib.dll_
+- Eventuellement les dll des solveur externe (XPRESS, CPLEX, ...) si elle ne sont pas déjà disponible dans le PATH (par défaut l'install d'XPRESS le fait)
 
 ---
 ---
