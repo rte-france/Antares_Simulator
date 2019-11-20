@@ -11,7 +11,7 @@ export ORTOOLS_CPLEX_SWITCH="OFF"  # activate Cplex interface
 
 # Pathes to extern solver installs
 #export CPLEXDIR="C:/Program Files/IBM/ILOG/CPLEX_Studio127/cplex"
-export XPRESSDIR="C:/xpressmp"
+#export XPRESSDIR="C:/xpressmp"
 
 ####                                ####
 #### DO NOT CHANGE BELOW THIS POINT ####
